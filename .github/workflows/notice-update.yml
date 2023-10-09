@@ -26,8 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #repo: ['Ceobe-Canteen-Desktop', 'Dun-Cookie-Flutter', 'Dun-Cookie-Vue']
-        repo: ['Dun-Cookie-Vue']
+        repo: ['Ceobe-Canteen-Desktop', 'Dun-Cookie-Flutter', 'Dun-Cookie-Vue']
     steps:
       - id: decrypt-app-token
         uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/actions/decrypt-secret@master
@@ -38,7 +37,7 @@ jobs:
         uses: actions/github-script@v6
         env:
           ISSUE_BODY: |
-            小刻食堂公共LICENSE已更新，请注意将产品声明和用户守则更新到最新版。  
+            小刻食堂公共协议已更新，请注意将产品声明和用户守则更新到最新版。  
             详情请查看[Enraged-Dun-Cookie-Development-Team/LICENSE](/Enraged-Dun-Cookie-Development-Team/LICENSE)。
             
             -----
@@ -48,7 +47,7 @@ jobs:
           github-token: ${{ steps.decrypt-app-token.outputs.DECRYPTED_VALUE }}
           script: |
             github.rest.issues.create({
-              title: '小刻食堂LICENSE更新',
+              title: '小刻食堂协议更新',
               body: `${{ env.ISSUE_BODY }}`,
               owner: context.repo.owner, repo: '${{ matrix.repo }}',
             });
