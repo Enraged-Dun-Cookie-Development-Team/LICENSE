@@ -16,6 +16,10 @@ jobs:
     steps:
       - id: generate-token
         uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/actions/generate-installation-token@master
+        with:
+          APP_ID: ${{ secrets.CEOBE_GITHUB_APP_ID }}
+          APP_PRIVATE_KEY: ${{ secrets.CEOBE_GITHUB_APP_PRIVATE_KEY }}
+          SECRET_PASSING_KEY: ${{ secrets.SECRET_PASSING_KEY }}
 
   notice:
     needs: [generate-token]
@@ -28,6 +32,7 @@ jobs:
       - uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/actions/decrypt-secret@master
         with:
           VALUE: ${{ needs.generate-token.outputs.ENCRYPTED_TOKEN }}
+          SECRET_PASSING_KEY: ${{ secrets.SECRET_PASSING_KEY }}
       - name: 尝试创建Issue
         uses: actions/github-script@v6
         env:
