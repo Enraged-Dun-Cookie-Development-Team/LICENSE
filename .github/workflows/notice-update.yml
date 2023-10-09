@@ -12,14 +12,13 @@ jobs:
   generate-token:
     runs-on: ubuntu-latest
     outputs:
-      ENCRYPTED_TOKEN: ${{ steps.generate-token.outputs.ENCRYPTED_VALUE }}
+      ENCRYPTED_TOKEN: ${{ steps.generate-token.outputs.ENCRYPTED_TOKEN }}
     steps:
       - id: generate-token
         uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/actions/generate-installation-token@master
         with:
           APP_ID: ${{ secrets.CEOBE_GITHUB_APP_ID }}
-          APP_PRIVATE_KEY: |
-            ${{ secrets.CEOBE_GITHUB_APP_PRIVATE_KEY }}
+          APP_PRIVATE_KEY: ${{ secrets.CEOBE_GITHUB_APP_PRIVATE_KEY }}
           SECRET_PASSING_KEY: ${{ secrets.SECRET_PASSING_KEY }}
 
   notice:
