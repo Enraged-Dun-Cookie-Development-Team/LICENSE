@@ -1,0 +1,47 @@
+name: notice update
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "master" ]
+    paths:
+      - '产品声明.MD'
+      - '用户守则.MD'
+
+jobs:
+  generate-token:
+    runs-on: ubuntu-latest
+    outputs:
+      ENCRYPTED_TOKEN: ${{ steps.generate-token.outputs.ENCRYPTED_VALUE }}
+    steps:
+      - id: generate-token
+        uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/generate-installation-token@master
+
+  notice:
+    needs: [generate-token]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        #repo: ['Ceobe-Canteen-Desktop', 'Dun-Cookie-Flutter', 'Dun-Cookie-Vue']
+        repo: ['Dun-Cookie-Vue']
+    steps:
+      - uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/decrypt-secret@master
+        with:
+          VALUE: ${{ needs.generate-token.outputs.ENCRYPTED_TOKEN }}
+      - name: 尝试创建Issue
+        uses: actions/github-script@v6
+        env:
+          ISSUE_BODY: |
+            小刻食堂公共LICENSE已更新，请注意将产品声明和用户守则更新到最新版。  
+            详情请查看[Enraged-Dun-Cookie-Development-Team/LICENSE](/Enraged-Dun-Cookie-Development-Team/LICENSE)。
+            
+            -----
+            该Issue由CI自动创建  
+            本次CI由@${{ github.triggering_actor }}触发运行
+        with:
+          script: |
+            github.rest.issues.create({
+              title: '小刻食堂LICENSE更新',
+              body: `${{ env.ISSUE_BODY }}`,
+              owner: context.repo.owner, repo: '${{ matrix.repo }}',
+            });
