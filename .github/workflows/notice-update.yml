@@ -15,7 +15,7 @@ jobs:
       ENCRYPTED_TOKEN: ${{ steps.generate-token.outputs.ENCRYPTED_VALUE }}
     steps:
       - id: generate-token
-        uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/generate-installation-token@master
+        uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/actions/generate-installation-token@master
 
   notice:
     needs: [generate-token]
@@ -25,7 +25,7 @@ jobs:
         #repo: ['Ceobe-Canteen-Desktop', 'Dun-Cookie-Flutter', 'Dun-Cookie-Vue']
         repo: ['Dun-Cookie-Vue']
     steps:
-      - uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/decrypt-secret@master
+      - uses: Enraged-Dun-Cookie-Development-Team/Ceobe-Github-Bot/actions/decrypt-secret@master
         with:
           VALUE: ${{ needs.generate-token.outputs.ENCRYPTED_TOKEN }}
       - name: 尝试创建Issue
